@@ -10,7 +10,7 @@ server <- function(input, output) {
     
     #Load data based on file type
     if (input$gps_file$type == 'text/csv') {
-      data <- read.csv(input$gps_file$datapath,TRUE, sep=";")
+      data <- read.csv(input$gps_file$datapath, header=TRUE, sep=";", dec=",")
     } else {
       data <- read.xlsx(input$gps_file$datapath, detectDates = FALSE)
       data$GPSDateTime <- as.Date(floor(data$GPSDateTime), origin = '1899-12-30')
