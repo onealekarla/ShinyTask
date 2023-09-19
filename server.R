@@ -1,3 +1,15 @@
+library(leaflet)
+library(tidyverse)
+library(DT)
+library(shiny)
+library(shinydashboard)
+library(readxl)
+library(DT)
+library(openxlsx)
+library(shinythemes)
+library(shinyalert)
+library(terra)
+
 server <- function(input, output) {
   
   #Allow for the upload of larger files
@@ -102,7 +114,7 @@ server <- function(input, output) {
   
   #Set default color and define output for average speed
   box_color <- 'green'
-    output$speed <- renderValueBox({
+  output$speed <- renderValueBox({
     
     #Show warning and change color of value box to red
     if (avg_speed() > 35) {

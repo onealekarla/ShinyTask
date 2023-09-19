@@ -1,3 +1,15 @@
+library(leaflet)
+library(tidyverse)
+library(DT)
+library(shiny)
+library(shinydashboard)
+library(readxl)
+library(DT)
+library(openxlsx)
+library(shinythemes)
+library(shinyalert)
+library(terra)
+
 ui <- shinyUI({
   
   #Create the dashboard header, titled 'Vehicle History'
@@ -7,6 +19,10 @@ ui <- shinyUI({
   
   #Create the dashboard sidebar
   sidebar <- dashboardSidebar(
+    #Custom css
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+    ),
     
     #Change the look of the dashboard
     shinyDashboardThemes("grey_dark"),
@@ -46,16 +62,16 @@ ui <- shinyUI({
     
       #Create a row with a tabbed interface for the map and table views
       fluidRow(
-        tabBox(id = "plot_box",
-               
-            #Map View tab
-            tabPanel("Map View",leafletOutput("plot")),
-            
-            #Table View tab
-            tabPanel("Table View",
-               DT::dataTableOutput("table")),
-               width = 12
-        )
+          tabBox(id = "plot_box",
+                 
+                 #Map View tab
+                 tabPanel("Map View",leafletOutput("plot")),
+                 
+                 #Table View tab
+                 tabPanel("Table View",
+                          DT::dataTableOutput("table")),
+                 width = 12
+          )
       )
   )
   
