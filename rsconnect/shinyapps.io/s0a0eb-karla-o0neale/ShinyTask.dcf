@@ -1,0 +1,13 @@
+name: ShinyTask
+title: ShinyTask
+username: s0a0eb-karla-o0neale
+account: s0a0eb-karla-o0neale
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9911648
+bundleId: 7701428
+url: https://s0a0eb-karla-o0neale.shinyapps.io/ShinyTask/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: test_gps_data.csv|test_gps_data.xlsx
