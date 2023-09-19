@@ -1,15 +1,3 @@
-library(leaflet)
-library(tidyverse)
-library(DT)
-library(shiny)
-library(shinydashboard)
-library(readxl)
-library(DT)
-library(openxlsx)
-library(shinythemes)
-library(shinyalert)
-library(terra)
-
 server <- function(input, output) {
   
   #Allow for the upload of larger files
@@ -48,6 +36,14 @@ server <- function(input, output) {
   #Define a dynamic UI element for selecting vehicles based on the data provided
   output$vehicles = renderUI({
     if (!(is.null(input$gps_file) || input$gps_file$name == '')) {
+      
+      # Loading indicator
+      show_modal_spinner(
+        spin = "circle",
+        color = "#3c8dbc",
+        text = NULL,
+      )
+      
       selectizeInput('vehicle',
                      'Select Vehicle:',
                      unique(gps_df()$VEHICLE), 
@@ -58,6 +54,11 @@ server <- function(input, output) {
                      )
       )
     }
+  })
+  
+  #Remove loading indicator
+  observeEvent(input$gps_file, {
+    remove_modal_spinner()
   })
   
   #Define a dynamic dateInput for selecting dates as soon as a vehicle was selected
@@ -167,4 +168,22 @@ server <- function(input, output) {
       #Allow user to show / hide route lines
       addLayersControl(overlayGroups = c('Routes'))
   })
+  
+  #Define tabBox output
+  observeEvent(input$plot,{
+    output$box <- renderUI({
+      tabBox(title = "",
+          
+          #Map View tab
+          tabPanel("Map View",leafletOutput("plot")),
+          
+          #Table View tab
+          tabPanel("Table View",
+                   DT::dataTableOutput("table")),
+          width = 12
+      )
+    })
+    shinyjs::hide(selector = "#navbar li a[data-value=B]")
+  })
+    
 }

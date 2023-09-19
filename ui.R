@@ -1,16 +1,6 @@
-library(leaflet)
-library(tidyverse)
-library(DT)
-library(shiny)
-library(shinydashboard)
-library(readxl)
-library(DT)
-library(openxlsx)
-library(shinythemes)
-library(shinyalert)
-library(terra)
-
 ui <- shinyUI({
+  
+  shinyjs::useShinyjs()
   
   #Create the dashboard header, titled 'Vehicle History'
   header <- dashboardHeader(
@@ -24,9 +14,6 @@ ui <- shinyUI({
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
     ),
     
-    #Change the look of the dashboard
-    shinyDashboardThemes("grey_dark"),
-    
     #Add a file input widget for uploading a single *.csv or *.xlsx file
     fileInput('gps_file','Upload Data:', multiple = FALSE, accept = c('.csv', '.xlsx')),
     
@@ -38,6 +25,7 @@ ui <- shinyUI({
     #Creates a center-aligned 'Submit' button
     #Dynamically generated based on whether a user has provided the necessary input
     div(
+      class = "button",
       uiOutput('submit'),
       align = "center"
     ),
@@ -49,7 +37,7 @@ ui <- shinyUI({
   )
   
   
-  #Create the main body of the dasboard
+  #Create the main body of the dashboard
   body <- dashboardBody(
     id = "body_content",
       
@@ -62,20 +50,22 @@ ui <- shinyUI({
     
       #Create a row with a tabbed interface for the map and table views
       fluidRow(
-          tabBox(id = "plot_box",
-                 
-                 #Map View tab
-                 tabPanel("Map View",leafletOutput("plot")),
-                 
-                 #Table View tab
-                 tabPanel("Table View",
-                          DT::dataTableOutput("table")),
-                 width = 12
-          )
+          uiOutput('box')
+        #   tabBox(id = "plot_box",
+        #          
+        #          #Map View tab
+        #          tabPanel("Map View",leafletOutput("plot")),
+        #          
+        #          #Table View tab
+        #          tabPanel("Table View",
+        #                   DT::dataTableOutput("table")),
+        #          width = 12
+        #   )
+        # )
       )
   )
   
   #Combine the dashboard elements to create the final UI
-  ui <- dashboardPage(header, sidebar, body)
+  ui <- dashboardPage(skin = "yellow", header, sidebar, body)
   
 })
