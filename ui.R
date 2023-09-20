@@ -63,17 +63,6 @@ ui <- shinyUI({
       #Create a row with a tabbed interface for the map and table views
       fluidRow(
           uiOutput('box')
-        #   tabBox(id = "plot_box",
-        #          
-        #          #Map View tab
-        #          tabPanel("Map View",leafletOutput("plot")),
-        #          
-        #          #Table View tab
-        #          tabPanel("Table View",
-        #                   DT::dataTableOutput("table")),
-        #          width = 12
-        #   )
-        # )
       )
   )
   

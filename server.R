@@ -11,6 +11,7 @@ server <- function(input, output) {
     #Load data based on file type
     if (input$gps_file$type == 'text/csv') {
       data <- read.csv(input$gps_file$datapath, header=TRUE, sep=";", dec=",")
+      data$GPSDateTime <- as.Date(data$GPSDateTime, origin = '1899-12-30')
     } else {
       data <- read.xlsx(input$gps_file$datapath, detectDates = FALSE)
       data$GPSDateTime <- as.Date(floor(data$GPSDateTime), origin = '1899-12-30')
@@ -56,6 +57,7 @@ server <- function(input, output) {
     }
   })
   
+  
   #Remove loading indicator
   observeEvent(input$gps_file, {
     remove_modal_spinner()
@@ -67,6 +69,23 @@ server <- function(input, output) {
       dateInput('date','Select Date:', value = '')
     }
   })
+  
+
+    observeEvent(input$date, {
+      selected_date <- input$date
+      if (length(input$date) > 0) {
+        if (!selected_date %in% gps_df()$GPSDateTime) {
+          shinyalert(
+            title = "Date not Found",
+            text = "The selected date was not found for this vehicle.",
+            type = "error"
+          )
+          updateDateInput(session = getDefaultReactiveDomain(), "date", value = NA)
+        }
+      }
+    })
+  
+  
   
   #Define a dynamic button to submit user input
   output$submit = renderUI({
@@ -97,7 +116,9 @@ server <- function(input, output) {
   #Calculate average speed when button clicked
   #Time where Distance is zero, excluded from total travel time
   avg_speed <- eventReactive(input$plot,{
-    round(total_distance()/sum(plot_points()$timediff[plot_points()$Distance != 0] / 3600))
+    round(total_distance()
+            / sum(plot_points()$timediff[plot_points()$Distance != 0] 
+                / 3600))
   })
   
   #Define output for the speed value box
@@ -175,7 +196,7 @@ server <- function(input, output) {
       tabBox(title = "",
           
           #Map View tab
-          tabPanel("Map View",leafletOutput("plot")),
+          tabPanel("Map View",leafletOutput("plot", height = "65vh")),
           
           #Table View tab
           tabPanel("Table View",
@@ -183,7 +204,6 @@ server <- function(input, output) {
           width = 12
       )
     })
-    shinyjs::hide(selector = "#navbar li a[data-value=B]")
   })
     
 }
