@@ -56,7 +56,8 @@ ui <- shinyUI({
     fluidRow(
       id = "start",
       infoBox(
-        title = HTML("<div class='info-box-title'>Upload a file to get started.</div>"),
+        title = "Get Started",
+        value = HTML("<div class='info-box-title'>Upload a file to get started.</div>"),
         icon = icon("angle-left"),
         color = "purple"
       )

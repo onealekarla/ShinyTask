@@ -395,7 +395,8 @@ server <- function(input, output) {
   show_info <- function(info_text) {
     output$info <- renderInfoBox(
       infoBox(
-        title = HTML(paste("<div class='info-box-title'>",
+        title = "Next:",
+        value = HTML(paste("<div class='info-box-title'>",
                            info_text,
                            "</div>")),
         icon = icon("angle-left"),
