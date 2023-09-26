@@ -39,6 +39,7 @@ server <- function(input, output) {
                      "Please upload a file of type *.csv or *.xlsx."),
         type = "error"
       )
+      remove_modal_spinner()
     }
   })
   
