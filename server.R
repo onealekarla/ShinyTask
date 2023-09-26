@@ -23,8 +23,6 @@ server <- function(input, output) {
       color = "#3c8dbc",
       text = NULL,
     )
-    
-    show_info("Please retry uploading a file")
     reset_inputs("file")
     if (input$gps_file$type == 'text/csv') {
       get_separators()

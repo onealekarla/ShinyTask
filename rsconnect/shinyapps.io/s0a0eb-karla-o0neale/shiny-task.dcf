@@ -5,8 +5,9 @@ account: s0a0eb-karla-o0neale
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 9911865
-bundleId: 7701811
+bundleId: 7729082
 url: https://s0a0eb-karla-o0neale.shinyapps.io/shiny-task/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .RData|loading.gif|README.md|ShinyTask.Rd
