@@ -40,6 +40,7 @@ server <- function(input, output) {
         type = "error"
       )
       remove_modal_spinner()
+      reset_inputs("file")
     }
   })
   
@@ -124,6 +125,8 @@ server <- function(input, output) {
                      "VEHICLE\n","GPSDateTime\n","X\n","Y\n","Distance\n","timesecs\n"),
         type = "error"
       )
+      remove_modal_spinner()
+      reset_inputs("file")
       return(NULL)
     }
     
@@ -271,7 +274,6 @@ server <- function(input, output) {
   
   # Trigger functions when submit button is clicked
   observeEvent(input$btn_submit,{
-    filtered_df <<- mutate(filtered_df, timediff = c(0,diff(timesecs)))
     generate_map()
     generate_table()
     show_tabBox()
@@ -340,9 +342,21 @@ server <- function(input, output) {
     total_distance <- sum(filtered_df$Distance, na.rm = TRUE)
     
     # Calculate average speed by vehicle & date
+    df <- filtered_df[filtered_df$Distance > 0 & !is.na(filtered_df$Distance), ]
+    
+    total_time <- (max(df$timesecs) - min(df$timesecs))/3600
+    
     avg_speed <- round(total_distance
-            / sum(filtered_df$timediff[filtered_df$Distance != 0]/ 3600, na.rm = TRUE) )
-                  
+            / total_time )
+    
+    print(paste(
+      "df:",
+      head(df),
+      "max: ",
+      max(df$timesecs),
+      "min: ",
+      min(df$timesecs)
+    ))
     
     # Show valueBoxes
     output$distance <- renderValueBox(
