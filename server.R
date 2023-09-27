@@ -349,15 +349,6 @@ server <- function(input, output) {
     avg_speed <- round(total_distance
             / total_time )
     
-    print(paste(
-      "df:",
-      head(df),
-      "max: ",
-      max(df$timesecs),
-      "min: ",
-      min(df$timesecs)
-    ))
-    
     # Show valueBoxes
     output$distance <- renderValueBox(
       valueBox(
